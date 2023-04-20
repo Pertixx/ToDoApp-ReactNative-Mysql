@@ -16,6 +16,7 @@ export const SHADOW = {
 };
 
 export const SIZES = {
+  title: 45,
   h1: 30,
   h2: 22,
   h3: 16,
@@ -61,6 +62,8 @@ export const COLORS = {
 
   darkOrange: "#E65100",
   orange: "#FF8C32",
+
+  yellow: "rgba(255,238,157,255)",
 
   transparentBlack1: "rgba(2, 2, 2, 0.1)",
   transparentBlack3: "rgba(2, 2, 2, 0.3)",

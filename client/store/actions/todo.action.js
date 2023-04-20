@@ -6,7 +6,6 @@ export const getTodosById = (id) => {
     try {
       const response = await fetch(`http://localhost:8080/todos/${id}`);
       const data = await response.json();
-      console.log(data);
 
       dispatch({
         type: GET_TODOS_BY_ID,
