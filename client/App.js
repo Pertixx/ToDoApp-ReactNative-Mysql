@@ -1,33 +1,44 @@
-import { StyleSheet, Text, View } from "react-native";
-import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { persistor, store } from "./store";
 
-import { StatusBar } from "expo-status-bar";
+import Navigator from "./navigation";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import { getTodosById } from "./store/actions/todo.action";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
-export default function App() {
-  const [todos, setTodos] = useState([]);
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+};
+
+const App = () => {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchData();
+    dispatch(getTodosById(1)); //using id 1 just to try and get the todos
   }, []);
-
-  const fetchData = async () => {
-    const response = await fetch("http://localhost:8080/todos/1");
-    const data = await response.json();
-    setTodos(data);
-  };
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Navigator />
+        </PersistGate>
+      </Provider>
     </View>
   );
-}
+};
+
+export default AppWrapper;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "black",
   },
 });
