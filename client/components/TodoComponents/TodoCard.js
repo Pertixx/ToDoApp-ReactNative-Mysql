@@ -1,17 +1,27 @@
 import { COLORS, SIZES } from "../../constants";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import CustomButton from "../CustomButton";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
+import { toggleCompleted } from "../../store/actions/todo.action";
 
-const TodoCard = ({ title, completed }) => {
-  const toggleCompleted = () => {
+const TodoCard = ({ id, title, navigation }) => {
+  const dispatch = useDispatch();
+  const completed = useSelector((state) => {
+    const todo = state.TodoReducer.todos.find((item) => item.id === id);
+    return todo.completed;
+  });
+
+  const handleCompleted = () => {
     console.log("toggle completed");
+    dispatch(toggleCompleted(id, completed));
   };
 
   return (
     <TouchableOpacity
+      onPress={() => handleCompleted()}
       style={[
         styles.container,
         completed === 0
@@ -19,16 +29,11 @@ const TodoCard = ({ title, completed }) => {
           : { backgroundColor: COLORS.yellow },
       ]}
     >
-      <CustomButton
-        onPress={toggleCompleted}
-        icon={
-          completed === 0 ? (
-            <FontAwesome5 name="circle" size={24} color="black" />
-          ) : (
-            <FontAwesome5 name="check-circle" size={24} color="black" />
-          )
-        }
-      />
+      {completed === 0 ? (
+        <FontAwesome5 name="circle" size={24} color="black" />
+      ) : (
+        <FontAwesome5 name="check-circle" size={24} color="black" />
+      )}
       <Text
         numberOfLines={1}
         style={[

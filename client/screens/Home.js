@@ -8,26 +8,21 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { COLORS, SIZES } from "../constants";
-import {
-  FlatList,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import HomeBanner from "../components/HomeComponents/HomeBanner";
 import HomeHeader from "../components/HomeComponents/HomeHeader";
 import ListHeader from "../components/HomeComponents/ListHeader";
-import React from "react";
 import TodoCard from "../components/TodoComponents/TodoCard";
-import { useSelector } from "react-redux";
+import { getTodosById } from "../store/actions/todo.action";
 
 const Home = ({ navigation }) => {
   const todos = useSelector((state) => state.TodoReducer.todos);
   const headerOpacity = useSharedValue(1);
-  const headerVisibility = useSharedValue(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const dispatch = useDispatch();
 
   const animatedHeaderStyle = useAnimatedStyle(() => ({
     opacity: headerOpacity.value,
@@ -51,10 +46,20 @@ const Home = ({ navigation }) => {
     },
   });
 
+  const fetchData = () => {
+    dispatch(getTodosById(1)); //harcoded user_id
+    setRefreshing(false);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+  };
+
   const renderItem = (todo) => {
     return (
       <View style={{ marginHorizontal: SIZES.padding }}>
-        <TodoCard title={todo.title} completed={todo.completed} />
+        <TodoCard {...todo} navigation={navigation} />
       </View>
     );
   };
@@ -66,6 +71,8 @@ const Home = ({ navigation }) => {
       <HomeBanner />
       <ListHeader animatedStyle={animatedHeaderStyle} />
       <Animated.FlatList
+        onRefresh={onRefresh}
+        refreshing={refreshing}
         data={todos}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
