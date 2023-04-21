@@ -12,6 +12,7 @@ CREATE TABLE users (
 CREATE TABLE todos (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255),
+  description VARCHAR(255),
   completed BOOLEAN DEFAULT FALSE,
   user_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -32,18 +33,18 @@ INSERT INTO users (name, email, password) VALUES ('Agustin', 'test1@gmail.com', 
 INSERT INTO users (name, email, password) VALUES ('Roberto', 'test2@gmail.com', 'password2');
 
 --Insert todos into the todos table, associated with the first user
-INSERT INTO todos (title, user_id)
+INSERT INTO todos (title, user_id, description)
 VALUES
-('Go for a morning run', 1),
-('Work on a project presentation', 1),
-('Go grocery shopping', 1),
-('Read 30 pages of book', 1),
-('Ride bike to the park', 1),
-('Cook dinner for family', 1),
-('Practice yoga', 1),
-('Listen to a podcast', 1),
-('Clean the house', 1),
-('Get 8 hours of sleep', 1);
+('Go for a morning run', 1, "This is a brief description just for the purpose of the app!"),
+('Work on a project presentation', 1, "This is a brief description just for the purpose of the app!"),
+('Go grocery shopping', 1, "This is a brief description just for the purpose of the app!"),
+('Read 30 pages of book', 1, "This is a brief description just for the purpose of the app!"),
+('Ride bike to the park', 1, "This is a brief description just for the purpose of the app!"),
+('Cook dinner for family', 1, "This is a brief description just for the purpose of the app!"),
+('Practice yoga', 1, "This is a brief description just for the purpose of the app!"),
+('Listen to a podcast', 1, "This is a brief description just for the purpose of the app!"),
+('Clean the house', 1, "This is a brief description just for the purpose of the app!"),
+('Get 8 hours of sleep', 1, "This is a brief description just for the purpose of the app!");
 
 --Share todo 1 of user 1 with user 2
 INSERT INTO shared_todos (todo_id, user_id, shared_with_id) VALUES (1, 1, 2);

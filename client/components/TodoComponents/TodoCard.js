@@ -7,21 +7,24 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { toggleCompleted } from "../../store/actions/todo.action";
 
-const TodoCard = ({ id, title, navigation }) => {
+const TodoCard = ({ id, title, description, created_at, navigation }) => {
   const dispatch = useDispatch();
   const completed = useSelector((state) => {
     const todo = state.TodoReducer.todos.find((item) => item.id === id);
     return todo.completed;
   });
 
-  const handleCompleted = () => {
-    console.log("toggle completed");
-    dispatch(toggleCompleted(id, completed));
-  };
-
   return (
     <TouchableOpacity
-      onPress={() => handleCompleted()}
+      onPress={() =>
+        navigation.navigate("Todo", {
+          title: title,
+          completed: completed,
+          id: id,
+          description: description,
+          creationDate: created_at,
+        })
+      }
       style={[
         styles.container,
         completed === 0
