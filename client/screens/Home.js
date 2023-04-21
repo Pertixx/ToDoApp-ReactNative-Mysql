@@ -1,3 +1,12 @@
+import Animated, {
+  SlideInDown,
+  SlideInUp,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { COLORS, SIZES } from "../constants";
 import {
   FlatList,
@@ -17,6 +26,30 @@ import { useSelector } from "react-redux";
 
 const Home = ({ navigation }) => {
   const todos = useSelector((state) => state.TodoReducer.todos);
+  const headerOpacity = useSharedValue(1);
+  const headerVisibility = useSharedValue(0);
+
+  const animatedHeaderStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    marginBottom: interpolate(
+      headerOpacity.value,
+      [0, 1],
+      [-SIZES.padding * 3.5, 0]
+    ),
+  }));
+
+  const handler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      const y = event.contentOffset.y;
+      if (y < 10) {
+        //Here we should have the header opened
+        headerOpacity.value = withTiming(1);
+      } else {
+        //Close the header
+        headerOpacity.value = withTiming(0);
+      }
+    },
+  });
 
   const renderItem = (todo) => {
     return (
@@ -31,12 +64,17 @@ const Home = ({ navigation }) => {
       <StatusBar barStyle={"light-content"} />
       <HomeHeader />
       <HomeBanner />
-      <ListHeader />
-      <FlatList
+      <ListHeader animatedStyle={animatedHeaderStyle} />
+      <Animated.FlatList
         data={todos}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => renderItem(item)}
+        onScroll={handler}
+        scrollEventThrottle={16}
+        ListFooterComponent={
+          <View style={{ marginTop: SIZES.bottomTabHeight }} />
+        }
       />
     </SafeAreaView>
   );

@@ -1,14 +1,15 @@
 import { COLORS, SIZES } from "../../constants";
 import { StyleSheet, Text, View } from "react-native";
 
+import Animated from "react-native-reanimated";
 import React from "react";
 import { useSelector } from "react-redux";
 
-const ListHeader = () => {
+const ListHeader = ({ animatedStyle }) => {
   const todos = useSelector((state) => state.TodoReducer.todos);
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <View style={styles.taskCount}>
         <Text
           style={{
@@ -27,7 +28,7 @@ const ListHeader = () => {
       >
         Tasks
       </Text>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -36,7 +37,7 @@ export default ListHeader;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: SIZES.padding,
-    marginTop: SIZES.padding,
+    marginTop: SIZES.padding + 2,
     flexDirection: "row",
     alignItems: "center",
   },
