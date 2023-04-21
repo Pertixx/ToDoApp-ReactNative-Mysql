@@ -30,7 +30,7 @@ const HomeHeader = () => {
           customStyles={{
             backgroundColor: COLORS.purple2,
             padding: SIZES.padding,
-            borderRadius: "100%",
+            borderRadius: SIZES.padding,
           }}
         />
         <CustomButton
@@ -41,7 +41,8 @@ const HomeHeader = () => {
           customStyles={{
             backgroundColor: COLORS.purple2,
             padding: SIZES.padding,
-            borderRadius: "100%",
+            borderRadius: SIZES.padding,
+            marginLeft: SIZES.padding - 5,
           }}
         />
       </View>
@@ -56,17 +57,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: SIZES.padding,
+    marginTop: SIZES.padding,
   },
   userIconContainer: {
     backgroundColor: COLORS.gray,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: "100%",
+    borderRadius: SIZES.padding * 10,
     padding: SIZES.padding,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "29%",
   },
 });

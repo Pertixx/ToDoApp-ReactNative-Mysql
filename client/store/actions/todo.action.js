@@ -4,7 +4,7 @@ export const CREATE_TODO = "CREATE_TODO";
 export const getTodosById = (id) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/todos/${id}`);
+      const response = await fetch(`http://192.168.0.9:8080/todos/${id}`);
       const data = await response.json();
 
       dispatch({

@@ -10,6 +10,7 @@ import {
 
 import HomeBanner from "../components/HomeComponents/HomeBanner";
 import HomeHeader from "../components/HomeComponents/HomeHeader";
+import ListHeader from "../components/HomeComponents/ListHeader";
 import React from "react";
 import TodoCard from "../components/TodoComponents/TodoCard";
 import { useSelector } from "react-redux";
@@ -30,6 +31,7 @@ const Home = ({ navigation }) => {
       <StatusBar barStyle={"light-content"} />
       <HomeHeader />
       <HomeBanner />
+      <ListHeader />
       <FlatList
         data={todos}
         showsVerticalScrollIndicator={false}
