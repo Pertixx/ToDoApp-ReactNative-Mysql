@@ -10,7 +10,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { COLORS, SIZES } from "../constants";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +28,10 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["60%"];
+
+  useEffect(() => {
+    onRefresh();
+  }, [todos]);
 
   const handlePresentModalPress = () => {
     bottomSheetModalRef.current?.present();
