@@ -17,24 +17,24 @@ const TodoReducer = (state = initialState, action) => {
         todos: action.payload,
       };
     case TOGGLE_COMPLETED:
-      state.todos.map((todo) =>
-        todo.id === action.payload
-          ? todo.completed === 0
-            ? (todo.completed = 1)
-            : (todo.completed = 0)
-          : null
-      );
-
-      return { ...state };
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload
+            ? { ...todo, completed: todo.completed ? 0 : 1 }
+            : todo
+        ),
+      };
     case CREATE_TODO:
-      state.todos.push(action.payload);
-      return state;
+      return {
+        ...state,
+        todos: [...state.todos, action.payload],
+      };
     case DELETE_TODO:
-      const index = state.todos.findIndex((id) => id === action.payload);
-      if (index !== -1) {
-        state.todos.splice(index, 1);
-      }
-      return state;
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
     default:
       return state;
   }

@@ -18,9 +18,15 @@ const HomeBanner = () => {
   }, [todos]);
 
   const getCompletedPercentage = () => {
-    let amountCompleted = 0;
-    todos.map((todo) => todo.completed === 1 && amountCompleted++);
-    setPercentageCompleted(((amountCompleted / todos.length) * 100).toFixed(2));
+    if (todos.length > 0) {
+      let amountCompleted = 0;
+      todos.map((todo) => todo.completed === 1 && amountCompleted++);
+      setPercentageCompleted(
+        ((amountCompleted / todos.length) * 100).toFixed(2)
+      );
+    } else {
+      setPercentageCompleted(0);
+    }
   };
 
   return (

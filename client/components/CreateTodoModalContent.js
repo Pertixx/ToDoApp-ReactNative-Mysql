@@ -1,4 +1,11 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { COLORS, SIZES } from "../constants";
 import React, { useState } from "react";
 
@@ -25,7 +32,10 @@ const CreateTodoModalContent = ({ modalRef }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Text style={styles.title}>Create your ToDo</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Title</Text>
@@ -40,7 +50,7 @@ const CreateTodoModalContent = ({ modalRef }) => {
         icon={<Entypo name="plus" size={24} color="black" />}
         onPress={handleSubmitTodo}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
