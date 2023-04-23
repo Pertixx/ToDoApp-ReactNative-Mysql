@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { persistor, store } from "./store";
 
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import Navigator from "./navigation";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
@@ -27,7 +28,9 @@ const App = () => {
     <View style={styles.container}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <Navigator />
+          <BottomSheetModalProvider>
+            <Navigator />
+          </BottomSheetModalProvider>
         </PersistGate>
       </Provider>
     </View>

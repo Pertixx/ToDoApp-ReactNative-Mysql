@@ -30,10 +30,9 @@ export async function getTodo(id) {
 }
 
 export async function getSharedTodoByID(id) {
-  const [rows] = await pool.query(
-    `SELECT * FROM shared_todos WHERE todo_id = ?`,
-    [id]
-  );
+  const [rows] = await pool.query(`SELECT * FROM shared_todos WHERE id = ?`, [
+    id,
+  ]);
   return rows[0];
 }
 
@@ -92,7 +91,8 @@ export async function shareTodo(todo_id, user_id, shared_with_id) {
     `,
     [todo_id, user_id, shared_with_id]
   );
-  return result.insertId;
+  const sharedTodoId = result.insertId;
+  return sharedTodoId;
 }
 /**
  * Tests for development

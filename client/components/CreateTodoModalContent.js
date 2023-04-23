@@ -39,11 +39,19 @@ const CreateTodoModalContent = ({ modalRef }) => {
       <Text style={styles.title}>Create your ToDo</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Title</Text>
-        <CustomInput value={title} onChange={setTitle} />
+        <CustomInput
+          value={title}
+          onChange={setTitle}
+          placeholder={"Enter the title"}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Description</Text>
-        <CustomInput value={description} onChange={setDescription} />
+        <CustomInput
+          value={description}
+          onChange={setDescription}
+          placeholder={"Enter the description"}
+        />
       </View>
       <CustomButton
         customStyles={styles.submitButton}

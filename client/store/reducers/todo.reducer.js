@@ -2,11 +2,13 @@ import {
   CREATE_TODO,
   DELETE_TODO,
   GET_TODOS_BY_ID,
+  SHARE_TODO,
   TOGGLE_COMPLETED,
 } from "../actions/todo.action";
 
 const initialState = {
   todos: [],
+  sharedTodos: [],
 };
 
 const TodoReducer = (state = initialState, action) => {
@@ -34,6 +36,11 @@ const TodoReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
+    case SHARE_TODO:
+      return {
+        ...state,
+        sharedTodos: [...state.sharedTodos, action.payload],
       };
     default:
       return state;

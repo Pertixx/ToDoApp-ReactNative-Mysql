@@ -2,6 +2,7 @@ export const GET_TODOS_BY_ID = "GET_TODOS_BY_ID";
 export const CREATE_TODO = "CREATE_TODO";
 export const TOGGLE_COMPLETED = "TOGGLE_COMPLETED";
 export const DELETE_TODO = "DELETE_TODO";
+export const SHARE_TODO = "SHARE_TODO";
 
 export const createTodo = (title, description, userId) => {
   return async (dispatch) => {
@@ -42,6 +43,34 @@ export const deleteTodo = (id) => {
       dispatch({
         type: DELETE_TODO,
         payload: id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const shareTodo = (id, user_id, email) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        "http://192.168.0.9:8080/todos/shared_todos",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            todo_id: id,
+            user_id: user_id,
+            email: email,
+          }),
+        }
+      );
+      const data = await response.json();
+      dispatch({
+        type: SHARE_TODO,
+        payload: data,
       });
     } catch (error) {
       console.log(error);

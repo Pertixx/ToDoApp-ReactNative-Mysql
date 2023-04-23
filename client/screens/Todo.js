@@ -1,25 +1,40 @@
 import { COLORS, SIZES } from "../constants";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import CompleteButton from "../components/TodoComponents/CompleteButton";
 import InfoSection from "../components/TodoComponents/InfoSection";
-import React from "react";
+import ShareTodoModalContent from "../components/TodoComponents/ShareTodoModalContent";
 import TodoHeader from "../components/TodoComponents/TodoHeader";
 import { toggleCompleted } from "../store/actions/todo.action";
-import { useDispatch } from "react-redux";
 
 const Todo = ({ navigation, route }) => {
   const { title, id, completed, description, creationDate } = route.params;
   const dispatch = useDispatch();
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = ["60%"];
+  const sharedTodos = useSelector((state) => state.TodoReducer.sharedTodos);
+  const [alreadyShared, setAlreadyShared] = useState(false);
+
+  useEffect(() => {
+    sharedTodos.map((sharedTodo) =>
+      sharedTodo.todo_id === id ? setAlreadyShared(true) : null
+    );
+  }, [sharedTodos]);
 
   const handleCompleted = () => {
-    console.log("toggle completed");
     dispatch(toggleCompleted(id, completed));
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TodoHeader navigation={navigation} />
+      <TodoHeader
+        navigation={navigation}
+        modalRef={bottomSheetModalRef}
+        todoId={id}
+      />
       <InfoSection
         title={title}
         description={description}
@@ -31,6 +46,24 @@ const Todo = ({ navigation, route }) => {
         completed={completed}
         id={id}
       />
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        snapPoints={snapPoints}
+        backgroundStyle={{
+          backgroundColor: COLORS.purple3,
+          borderRadius: SIZES.padding * 2,
+          borderWidth: 4,
+          borderColor: COLORS.black,
+        }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.white }}
+      >
+        <ShareTodoModalContent
+          id={id}
+          title={title}
+          shared={alreadyShared}
+          modalRef={bottomSheetModalRef}
+        />
+      </BottomSheetModal>
     </SafeAreaView>
   );
 };

@@ -1,16 +1,38 @@
 import { COLORS, SIZES } from "../../constants";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import CustomButton from "../CustomButton";
+import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import { useSelector } from "react-redux";
 
-const TodoHeader = ({ navigation }) => {
+const TodoHeader = ({ navigation, modalRef, todoId }) => {
+  const sharedTodos = useSelector((state) => state.TodoReducer.sharedTodos);
+  const [shareIcon, setShareIcon] = useState(
+    <MaterialIcons
+      name="ios-share"
+      size={SIZES.icon + 5}
+      color={COLORS.white}
+    />
+  );
+
+  useEffect(() => {
+    sharedTodos.map((sharedTodo) =>
+      sharedTodo.todo_id === todoId
+        ? setShareIcon(
+            <Feather name="users" size={SIZES.icon} color={COLORS.white} />
+          )
+        : null
+    );
+  }, [sharedTodos]);
+
   return (
     <View style={styles.container}>
       <CustomButton
         onPress={() => {
+          modalRef.current?.close();
           navigation.goBack();
         }}
         icon={
@@ -23,16 +45,8 @@ const TodoHeader = ({ navigation }) => {
       />
       <Text style={styles.title}>Details</Text>
       <CustomButton
-        onPress={() => {
-          console.log("Handle share todo");
-        }}
-        icon={
-          <MaterialIcons
-            name="ios-share"
-            size={SIZES.icon + 5}
-            color={COLORS.white}
-          />
-        }
+        onPress={() => modalRef.current?.present()}
+        icon={shareIcon}
       />
     </View>
   );

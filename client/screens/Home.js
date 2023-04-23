@@ -74,40 +74,38 @@ const Home = ({ navigation }) => {
   };
 
   return (
-    <BottomSheetModalProvider>
-      <SafeAreaView style={styles.container}>
-        <StatusBar barStyle={"light-content"} />
-        <HomeHeader handleShowModal={handlePresentModalPress} />
-        <HomeBanner />
-        <ListHeader animatedStyle={animatedHeaderStyle} />
-        <Animated.FlatList
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          data={todos}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => renderItem(item)}
-          onScroll={handler}
-          scrollEventThrottle={16}
-          ListFooterComponent={
-            <View style={{ marginTop: SIZES.bottomTabHeight }} />
-          }
-        />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          snapPoints={snapPoints}
-          backgroundStyle={{
-            backgroundColor: COLORS.purple3,
-            borderRadius: SIZES.padding * 2,
-            borderWidth: 4,
-            borderColor: COLORS.black,
-          }}
-          handleIndicatorStyle={{ backgroundColor: COLORS.white }}
-        >
-          <CreateTodoModalContent modalRef={bottomSheetModalRef} />
-        </BottomSheetModal>
-      </SafeAreaView>
-    </BottomSheetModalProvider>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={"light-content"} />
+      <HomeHeader handleShowModal={handlePresentModalPress} />
+      <HomeBanner />
+      <ListHeader animatedStyle={animatedHeaderStyle} />
+      <Animated.FlatList
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+        data={todos}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => renderItem(item)}
+        onScroll={handler}
+        scrollEventThrottle={16}
+        ListFooterComponent={
+          <View style={{ marginTop: SIZES.bottomTabHeight }} />
+        }
+      />
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        snapPoints={snapPoints}
+        backgroundStyle={{
+          backgroundColor: COLORS.purple3,
+          borderRadius: SIZES.padding * 2,
+          borderWidth: 4,
+          borderColor: COLORS.black,
+        }}
+        handleIndicatorStyle={{ backgroundColor: COLORS.white }}
+      >
+        <CreateTodoModalContent modalRef={bottomSheetModalRef} />
+      </BottomSheetModal>
+    </SafeAreaView>
   );
 };
 

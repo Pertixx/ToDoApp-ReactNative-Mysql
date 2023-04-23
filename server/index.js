@@ -72,14 +72,16 @@ app.delete("/todos/:id", async (req, res) => {
 app.post("/todos/shared_todos", async (req, res) => {
   const { todo_id, user_id, email } = req.body;
   const userToShare = await getUserByEmail(email);
-  const sharedTodo = await shareTodo(todo_id, user_id, userToShare.id);
-  res.status(201).send(sharedTodo);
+  const sharedTodoId = await shareTodo(todo_id, user_id, userToShare.id);
+  const sharedTodo = await getSharedTodoByID(sharedTodoId);
+  console.log(sharedTodo);
+  res.status(200).send(sharedTodo);
 });
 
 app.post("/todos", async (req, res) => {
   const { user_id, title, description } = req.body;
   const todo = await createTodo(user_id, title, description);
-  res.status(201).send(todo);
+  res.status(200).send(todo);
 });
 
 app.listen(8080, () => {
