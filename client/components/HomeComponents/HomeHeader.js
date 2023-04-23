@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 
-const HomeHeader = () => {
+const HomeHeader = ({ handleShowModal }) => {
   const handleOnPress = () => {
     console.log("Pressed");
   };
@@ -34,7 +34,7 @@ const HomeHeader = () => {
           }}
         />
         <CustomButton
-          onPress={handleOnPress}
+          onPress={handleShowModal}
           icon={
             <AntDesign name="plus" size={SIZES.icon} color={COLORS.white2} />
           }

@@ -16,7 +16,6 @@ const TodoReducer = (state = initialState, action) => {
         todos: action.payload,
       };
     case TOGGLE_COMPLETED:
-      console.log(`Payload id ${action.payload}`);
       state.todos.map((todo) =>
         todo.id === action.payload
           ? todo.completed === 0
@@ -27,6 +26,7 @@ const TodoReducer = (state = initialState, action) => {
 
       return { ...state };
     case CREATE_TODO:
+      state.todos.push(action.payload);
       return state;
     default:
       return state;

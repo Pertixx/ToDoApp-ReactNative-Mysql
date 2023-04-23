@@ -43,6 +43,7 @@ export const COLORS = {
 
   purple: "rgba(17, 28, 47, 255)",
   purple2: "rgba(23,39,65,255)",
+  purple3: "rgba(30,51,90,255)",
 
   white: "#fff",
   white2: "#F9F9F9",

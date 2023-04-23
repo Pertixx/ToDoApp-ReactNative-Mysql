@@ -77,8 +77,8 @@ app.post("/todos/shared_todos", async (req, res) => {
 });
 
 app.post("/todos", async (req, res) => {
-  const { user_id, title } = req.body;
-  const todo = await createTodo(user_id, title);
+  const { user_id, title, description } = req.body;
+  const todo = await createTodo(user_id, title, description);
   res.status(201).send(todo);
 });
 

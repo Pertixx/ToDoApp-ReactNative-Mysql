@@ -49,13 +49,13 @@ export async function getUserByEmail(email) {
   return rows[0];
 }
 
-export async function createTodo(user_id, title) {
+export async function createTodo(user_id, title, description) {
   const [result] = await pool.query(
     `
-    INSERT INTO todos (user_id, title)
-    VALUES (?, ?)
+    INSERT INTO todos (user_id, title, description)
+    VALUES (?, ?, ?)
   `,
-    [user_id, title]
+    [user_id, title, description]
   );
   const todoID = result.insertId;
   return getTodo(todoID);

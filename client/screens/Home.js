@@ -1,17 +1,20 @@
 import Animated, {
-  SlideInDown,
-  SlideInUp,
   interpolate,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 import { COLORS, SIZES } from "../constants";
-import React, { useState } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, View } from "react-native";
+import React, { useRef, useState } from "react";
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
+import CreateTodoModalContent from "../components/CreateTodoModalContent";
 import HomeBanner from "../components/HomeComponents/HomeBanner";
 import HomeHeader from "../components/HomeComponents/HomeHeader";
 import ListHeader from "../components/HomeComponents/ListHeader";
@@ -23,6 +26,12 @@ const Home = ({ navigation }) => {
   const headerOpacity = useSharedValue(1);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
+  const bottomSheetModalRef = useRef(null);
+  const snapPoints = ["60%"];
+
+  const handlePresentModalPress = () => {
+    bottomSheetModalRef.current?.present();
+  };
 
   const animatedHeaderStyle = useAnimatedStyle(() => ({
     opacity: headerOpacity.value,
@@ -65,25 +74,40 @@ const Home = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={"light-content"} />
-      <HomeHeader />
-      <HomeBanner />
-      <ListHeader animatedStyle={animatedHeaderStyle} />
-      <Animated.FlatList
-        onRefresh={onRefresh}
-        refreshing={refreshing}
-        data={todos}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => renderItem(item)}
-        onScroll={handler}
-        scrollEventThrottle={16}
-        ListFooterComponent={
-          <View style={{ marginTop: SIZES.bottomTabHeight }} />
-        }
-      />
-    </SafeAreaView>
+    <BottomSheetModalProvider>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle={"light-content"} />
+        <HomeHeader handleShowModal={handlePresentModalPress} />
+        <HomeBanner />
+        <ListHeader animatedStyle={animatedHeaderStyle} />
+        <Animated.FlatList
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          data={todos}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => renderItem(item)}
+          onScroll={handler}
+          scrollEventThrottle={16}
+          ListFooterComponent={
+            <View style={{ marginTop: SIZES.bottomTabHeight }} />
+          }
+        />
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          backgroundStyle={{
+            backgroundColor: COLORS.purple3,
+            borderRadius: SIZES.padding * 2,
+            borderWidth: 4,
+            borderColor: COLORS.black,
+          }}
+          handleIndicatorStyle={{ backgroundColor: COLORS.white }}
+        >
+          <CreateTodoModalContent modalRef={bottomSheetModalRef} />
+        </BottomSheetModal>
+      </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 };
 

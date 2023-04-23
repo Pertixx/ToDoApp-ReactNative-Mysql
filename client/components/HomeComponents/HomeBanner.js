@@ -1,7 +1,7 @@
 import { COLORS, SIZES } from "../../constants";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import React from "react";
 import { useSelector } from "react-redux";
 
 const HomeBanner = () => {
@@ -11,17 +11,28 @@ const HomeBanner = () => {
   const options = { weekday: "long" };
   const fullDay = today.toLocaleDateString("en-US", options);
   const currentDayName = fullDay.split(",")[0];
+  const [percentageCompleted, setPercentageCompleted] = useState(0);
+
+  useEffect(() => {
+    getCompletedPercentage();
+  }, [todos]);
+
+  const getCompletedPercentage = () => {
+    let amountCompleted = 0;
+    todos.map((todo) => todo.completed === 1 && amountCompleted++);
+    setPercentageCompleted(((amountCompleted / todos.length) * 100).toFixed(2));
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to your ToDos</Text>
+      <Text style={styles.title}>Welcome to your Todos</Text>
       <View style={styles.infoContainer}>
         <View>
           <Text style={styles.infoText}>Today's {currentDayName}</Text>
           <Text style={styles.subText}>{currentDate}</Text>
         </View>
         <View style={{ alignItems: "flex-end" }}>
-          <Text style={styles.infoText}>75 % Done</Text>
+          <Text style={styles.infoText}>{percentageCompleted}%</Text>
           <Text style={styles.subText}>Completed Tasks</Text>
         </View>
       </View>
