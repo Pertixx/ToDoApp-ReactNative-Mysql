@@ -56,7 +56,7 @@ const Home = ({ navigation }) => {
   });
 
   const fetchData = () => {
-    dispatch(getTodosById(1)); //harcoded user_id
+    dispatch(getTodosById(3)); //harcoded user_id
     setRefreshing(false);
   };
 

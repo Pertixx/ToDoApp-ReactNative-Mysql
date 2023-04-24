@@ -6,17 +6,31 @@ import {
   View,
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import { FontAwesome } from "@expo/vector-icons";
+import { getUserById } from "../../helpers";
 import { shareTodo } from "../../store/actions/todo.action";
 import { useDispatch } from "react-redux";
 
-const ShareTodoModalContent = ({ id, modalRef, title, shared }) => {
+const ShareTodoModalContent = ({
+  id,
+  modalRef,
+  title,
+  shared,
+  completed,
+  sharedWithId,
+}) => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
+  const [sharedUserName, setSharedUserName] = useState("");
+
+  const getSharedUserName = async () => {
+    const sharedUser = await getUserById(sharedWithId);
+    setSharedUserName(sharedUser.name);
+  };
 
   const handleShare = () => {
     if (email.trim().length === 0) {
@@ -29,9 +43,56 @@ const ShareTodoModalContent = ({ id, modalRef, title, shared }) => {
   };
 
   if (shared) {
+    getSharedUserName(sharedWithId);
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Shared Tasks</Text>
+        <Text style={styles.sharedTaskTitle}>{title}</Text>
+        <View
+          style={{
+            alignItems: "center",
+            marginVertical: SIZES.padding,
+          }}
+        >
+          <Text style={styles.label}>Status</Text>
+          <View style={styles.box}>
+            <Text style={{ fontWeight: "bold" }}>
+              {completed === 0 ? "Incompleted" : "Completed"}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            alignItems: "center",
+            marginVertical: SIZES.padding,
+          }}
+        >
+          <Text style={styles.label}>Participants</Text>
+          <View
+            style={{
+              flexDirection: "row",
+            }}
+          >
+            <View style={[styles.box, { marginRight: SIZES.padding }]}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                Agustin
+              </Text>
+            </View>
+            <View style={styles.box}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                {sharedUserName}
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
     );
   }
@@ -91,5 +152,17 @@ const styles = StyleSheet.create({
     height: SIZES.bottomTabHeight,
     borderRadius: SIZES.bottomTabHeight,
     alignSelf: "center",
+  },
+  sharedTaskTitle: {
+    color: COLORS.yellow,
+    fontWeight: "bold",
+    fontSize: SIZES.h2,
+    alignSelf: "center",
+    marginVertical: SIZES.padding * 2,
+  },
+  box: {
+    backgroundColor: COLORS.white,
+    padding: SIZES.padding - 4,
+    borderRadius: SIZES.padding * 2,
   },
 });

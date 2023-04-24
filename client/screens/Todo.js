@@ -17,10 +17,13 @@ const Todo = ({ navigation, route }) => {
   const snapPoints = ["60%"];
   const sharedTodos = useSelector((state) => state.TodoReducer.sharedTodos);
   const [alreadyShared, setAlreadyShared] = useState(false);
+  const [sharedWithId, setSharedWithId] = useState(null);
 
   useEffect(() => {
     sharedTodos.map((sharedTodo) =>
-      sharedTodo.todo_id === id ? setAlreadyShared(true) : null
+      sharedTodo.todo_id === id
+        ? (setAlreadyShared(true), setSharedWithId(sharedTodo.shared_with_id))
+        : null
     );
   }, [sharedTodos]);
 
@@ -61,6 +64,8 @@ const Todo = ({ navigation, route }) => {
           id={id}
           title={title}
           shared={alreadyShared}
+          completed={completed}
+          sharedWithId={sharedWithId}
           modalRef={bottomSheetModalRef}
         />
       </BottomSheetModal>

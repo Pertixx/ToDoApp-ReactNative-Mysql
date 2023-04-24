@@ -24,7 +24,7 @@ const CreateTodoModalContent = ({ modalRef }) => {
     if (title.trim().length === 0 || description.trim().length === 0) {
       Alert.alert("Form Error", "Please check the form");
     } else {
-      dispatch(createTodo(title, description, 1)); //hardcoded user_id
+      dispatch(createTodo(title, description, 3)); //hardcoded user_id
       setTitle("");
       setDescription("");
       modalRef.current?.close();

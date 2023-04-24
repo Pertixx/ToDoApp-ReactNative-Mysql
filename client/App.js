@@ -21,7 +21,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTodosById(1)); //using id 1 just to try and get the todos
+    dispatch(getTodosById(3)); //using id 1 just to try and get the todos
   }, []);
 
   return (
