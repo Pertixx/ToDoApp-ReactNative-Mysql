@@ -5,7 +5,7 @@ export const LOG_OUT = "LOG_OUT";
 export const getUserByEmailAndPassword = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await fetch("http://192.168.0.9:8080/users", {
+      const response = await fetch("http://192.168.0.9:8080/login", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -29,6 +29,22 @@ export const getUserByEmailAndPassword = (email, password) => {
 export const createUser = (email, username, password) => {
   return async (dispatch) => {
     try {
+      const response = await fetch("http://192.168.0.9:8080/users", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name: username,
+          email: email,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      dispatch({
+        type: SIGN_UP_USER,
+        payload: data,
+      });
     } catch (error) {
       console.log(error);
     }

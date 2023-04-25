@@ -57,6 +57,15 @@ export async function getUserByEmailAndPassword(email, password) {
   return rows[0];
 }
 
+export async function createUser(name, email, password) {
+  const [result] = await pool.query(
+    `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`,
+    [name, email, password]
+  );
+  const userId = result.insertId;
+  return getUserByID(userId);
+}
+
 export async function createTodo(user_id, title, description) {
   const [result] = await pool.query(
     `

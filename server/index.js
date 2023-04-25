@@ -1,5 +1,6 @@
 import {
   createTodo,
+  createUser,
   deleteTodo,
   getSharedTodoByID,
   getTodo,
@@ -59,9 +60,15 @@ app.get("/users/:id", async (req, res) => {
   res.status(200).send(user);
 });
 
-app.post("/users", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await getUserByEmailAndPassword(email, password);
+  res.status(200).send(user);
+});
+
+app.post("/users", async (req, res) => {
+  const { name, email, password } = req.body;
+  const user = await createUser(name, email, password);
   res.status(200).send(user);
 });
 

@@ -1,5 +1,5 @@
-import { COLORS, SIZES } from "../../constants";
 import {
+  Alert,
   Image,
   ScrollView,
   StatusBar,
@@ -7,17 +7,36 @@ import {
   Text,
   View,
 } from "react-native";
+import { COLORS, SIZES } from "../../constants";
 import React, { useState } from "react";
 
 import { BlurView } from "expo-blur";
 import CustomButton from "../../components/CustomButton";
 import CustomInput from "../../components/CustomInput";
 import { Feather } from "@expo/vector-icons";
+import { createUser } from "../../store/actions/user.action";
+import { useDispatch } from "react-redux";
 
 const SignUp = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSignUp = () => {
+    if (
+      name.trim().length === 0 ||
+      email.trim().length === 0 ||
+      password.trim().length === 0
+    ) {
+      Alert.alert("Form Error", "Please check the form");
+    } else {
+      dispatch(createUser(email, name, password));
+      setName("");
+      setEmail("");
+      setPassword("");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -82,6 +101,7 @@ const SignUp = ({ navigation }) => {
                 Already have an account? Sign In
               </Text>
               <CustomButton
+                onPress={handleSignUp}
                 customStyles={styles.signUpButton}
                 icon={
                   <Text
