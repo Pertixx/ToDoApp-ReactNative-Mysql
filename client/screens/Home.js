@@ -23,11 +23,16 @@ import { getTodosById } from "../store/actions/todo.action";
 
 const Home = ({ navigation }) => {
   const todos = useSelector((state) => state.TodoReducer.todos);
+  const user = useSelector((state) => state.UserReducer.user);
   const headerOpacity = useSharedValue(1);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const bottomSheetModalRef = useRef(null);
   const snapPoints = ["60%"];
+
+  useEffect(() => {
+    dispatch(getTodosById(user.id));
+  }, []);
 
   const handlePresentModalPress = () => {
     bottomSheetModalRef.current?.present();
@@ -56,7 +61,7 @@ const Home = ({ navigation }) => {
   });
 
   const fetchData = () => {
-    dispatch(getTodosById(3)); //harcoded user_id
+    dispatch(getTodosById(user.id)); //harcoded user_id
     setRefreshing(false);
   };
 

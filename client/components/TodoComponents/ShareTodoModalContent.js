@@ -7,13 +7,13 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CustomButton from "../CustomButton";
 import CustomInput from "../CustomInput";
 import { FontAwesome } from "@expo/vector-icons";
 import { getUserById } from "../../helpers";
 import { shareTodo } from "../../store/actions/todo.action";
-import { useDispatch } from "react-redux";
 
 const ShareTodoModalContent = ({
   id,
@@ -26,6 +26,7 @@ const ShareTodoModalContent = ({
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const [sharedUserName, setSharedUserName] = useState("");
+  const user = useSelector((state) => state.UserReducer.user);
 
   const getSharedUserName = async () => {
     const sharedUser = await getUserById(sharedWithId);
@@ -36,7 +37,7 @@ const ShareTodoModalContent = ({
     if (email.trim().length === 0) {
       Alert.alert("Form Error", "Please check the email");
     } else {
-      dispatch(shareTodo(id, 1, email)); //hardcoded user_id
+      dispatch(shareTodo(id, user.id, email));
       setEmail("");
       modalRef.current?.close();
     }
@@ -111,6 +112,7 @@ const ShareTodoModalContent = ({
           onChange={setEmail}
           keyboardType={"email-address"}
           placeholder={"Enter the email"}
+          customStyles={styles.input}
         />
       </View>
       <CustomButton
@@ -164,5 +166,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: SIZES.padding - 4,
     borderRadius: SIZES.padding * 2,
+  },
+  input: {
+    borderWidth: 3,
+    borderColor: COLORS.lightGray2,
+    padding: SIZES.padding - 5,
+    borderRadius: SIZES.padding * 1.2,
+    color: COLORS.white,
   },
 });

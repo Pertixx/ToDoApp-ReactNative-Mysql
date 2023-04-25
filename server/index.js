@@ -5,6 +5,7 @@ import {
   getTodo,
   getTodosByID,
   getUserByEmail,
+  getUserByEmailAndPassword,
   getUserByID,
   shareTodo,
   toggleCompleted,
@@ -55,6 +56,12 @@ app.get("/todos/shared_todos/:id", async (req, res) => {
 
 app.get("/users/:id", async (req, res) => {
   const user = await getUserByID(req.params.id);
+  res.status(200).send(user);
+});
+
+app.post("/users", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await getUserByEmailAndPassword(email, password);
   res.status(200).send(user);
 });
 

@@ -48,6 +48,15 @@ export async function getUserByEmail(email) {
   return rows[0];
 }
 
+export async function getUserByEmailAndPassword(email, password) {
+  const [rows] = await pool.query(
+    `SELECT * FROM users WHERE email = ? AND password = ?`,
+    [email, password]
+  );
+
+  return rows[0];
+}
+
 export async function createTodo(user_id, title, description) {
   const [result] = await pool.query(
     `

@@ -5,9 +5,6 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import Navigator from "./navigation";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
-import { getTodosById } from "./store/actions/todo.action";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 const AppWrapper = () => {
   return (
@@ -18,12 +15,6 @@ const AppWrapper = () => {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getTodosById(3)); //using id 1 just to try and get the todos
-  }, []);
-
   return (
     <View style={styles.container}>
       <Provider store={store}>

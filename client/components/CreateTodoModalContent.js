@@ -8,14 +8,15 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import CustomButton from "./CustomButton";
 import CustomInput from "./CustomInput";
 import { Entypo } from "@expo/vector-icons";
 import { createTodo } from "../store/actions/todo.action";
-import { useDispatch } from "react-redux";
 
 const CreateTodoModalContent = ({ modalRef }) => {
+  const user = useSelector((state) => state.UserReducer.user);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ const CreateTodoModalContent = ({ modalRef }) => {
     if (title.trim().length === 0 || description.trim().length === 0) {
       Alert.alert("Form Error", "Please check the form");
     } else {
-      dispatch(createTodo(title, description, 3)); //hardcoded user_id
+      dispatch(createTodo(title, description, user.id));
       setTitle("");
       setDescription("");
       modalRef.current?.close();
@@ -43,6 +44,7 @@ const CreateTodoModalContent = ({ modalRef }) => {
           value={title}
           onChange={setTitle}
           placeholder={"Enter the title"}
+          customStyles={styles.input}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -51,6 +53,7 @@ const CreateTodoModalContent = ({ modalRef }) => {
           value={description}
           onChange={setDescription}
           placeholder={"Enter the description"}
+          customStyles={styles.input}
         />
       </View>
       <CustomButton
@@ -92,5 +95,12 @@ const styles = StyleSheet.create({
     width: SIZES.bottomTabHeight,
     height: SIZES.bottomTabHeight,
     borderRadius: SIZES.bottomTabHeight,
+  },
+  input: {
+    borderWidth: 3,
+    borderColor: COLORS.lightGray2,
+    padding: SIZES.padding - 5,
+    borderRadius: SIZES.padding * 1.2,
+    color: COLORS.white,
   },
 });
